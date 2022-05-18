@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,7 @@ public class HomeController {
     AccountService accountService;
     @Autowired
     Account account;
+
     @GetMapping("user")
     // tự động new đối tượng;
     public String home(Model model) {
@@ -57,18 +59,32 @@ public class HomeController {
         return "users/create";  // Return tên của View, model sẽ tự động pass vào view
     }
 
+    @GetMapping("user/edit/{username}")
+    public String edit(Model model, @PathVariable("username") String username) {
+
+        if (username != null) {
+            Account accountEdit = accountService.findAccountByUsername(username);
+            model.addAttribute("account", accountEdit);
+            return "/users/edit";
+        }
+        return "redirect:/user";
+    }
+
     @PostMapping("user/create")
     public String createUser(Model model,
             @Valid @ModelAttribute("account") Account dto,
             BindingResult result) {
         // kiểm tra lỗi
-        if(result.hasErrors()) {
-        // đẩy lại view và đưa ra thông báo lỗi
+        if (result.hasErrors()) {
+            // đẩy lại view và đưa ra thông báo lỗi
             System.err.println("có lỗi");
             return "/users/create";
-        
+
         }
-        accountService.add(dto);
+        System.out.println("dto" + dto.getUsername());
+        Account copy = new Account();
+        BeanUtils.copyProperties(dto, copy);
+        accountService.add(copy);
         return "redirect:/user";  // Return tên của View, model sẽ tự động pass vào view
     }
 
@@ -92,13 +108,23 @@ public class HomeController {
             @PathVariable("username") String username
     ) {
 
-        AccountService service = new AccountService();
         if (username != null) {
-            Account detail = service.findAccountByUsername(username);
+            Account detail = accountService.findAccountByUsername(username);
             model.addAttribute("account", detail);
             return "users/detail";
         }
         return "redirect:users";  // Return tên của View, model sẽ tự động pass vào view
+    }
+
+    @GetMapping("user/delete/{username}")
+    public String delete(
+            @PathVariable("username") String username
+    ) {
+        System.out.println("com.teachJava5.teachJava5.controller.HomeController.delete()");
+        if (username != null) {
+            boolean detail = accountService.remove(username);
+        }
+        return "redirect:/user"; // Return tên của View, model sẽ tự động pass vào view
     }
 
 }

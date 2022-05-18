@@ -15,11 +15,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class BeanConfig {
+
     @Bean
     public Account getAccount() {
         Account acount = new Account();
         acount.setUsername("admin");
-         acount.setPassword("123456");
+        acount.setPassword("123456");
         acount.setRole("admin");
         return acount;
     }

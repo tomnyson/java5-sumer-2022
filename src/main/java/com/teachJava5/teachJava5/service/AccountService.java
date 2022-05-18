@@ -34,14 +34,37 @@ public class AccountService {
         return this.list;
     }
 
-    public boolean add(Account account) {
+    public boolean add(Account acc) {
         try {
-            list.add(account);
+            // kiểm trra xem đã có username chưa
+            for (int i = 0; i <= list.size(); i++) {
+                if (list.get(i).getUsername().equals(acc.getUsername())) {
+                    list.set(i, acc);
+
+                    return true;
+                }
+            }
+            list.add(acc);
             return true;
         } catch (Exception e) {
             return false;
         }
 
+    }
+
+    public boolean remove(String username) {
+        try {
+            for (int i = 0; i <= list.size(); i++) {
+                if (list.get(i).getUsername().equals(username)) {
+                    //xoá đi
+                    list.remove(i);
+                    return true;
+                }
+            }
+            return  false;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public Account findAccountByUsername(String username) {
