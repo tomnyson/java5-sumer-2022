@@ -8,24 +8,43 @@ package com.teachJava5.teachJava5.service;
 import com.teachJava5.teachJava5.dto.Account;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author tomnyson
  */
+@Service
 public class AccountService {
 
-    public List<Account> getList() {
-        List<Account> list = new ArrayList<Account>();
+    List<Account> list = new ArrayList<Account>();
+
+    public void setList(List<Account> list) {
+        this.list = list;
+    }
+
+    public AccountService() {
         list.add(new Account("admin", "12345", "admin"));
         list.add(new Account("admin1", "12345", "admin"));
         list.add(new Account("admin2", "12345", "admin"));
         list.add(new Account("user", "12345", "user"));
-        return list;
+    }
+
+    public List<Account> getList() {
+        return this.list;
+    }
+
+    public boolean add(Account account) {
+        try {
+            list.add(account);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 
     public Account findAccountByUsername(String username) {
-        List<Account> list = this.getList();
         for (Account account : list) {
             if (account.getUsername().equals(username)) {
                 return account;
