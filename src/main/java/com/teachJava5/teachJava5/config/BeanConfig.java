@@ -5,9 +5,10 @@
  */
 package com.teachJava5.teachJava5.config;
 
-import com.teachJava5.teachJava5.dto.Account;
+import com.teachJava5.teachJava5.dto.AccountDTO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  *
@@ -17,8 +18,9 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfig {
 
     @Bean
-    public Account getAccount() {
-        Account acount = new Account();
+    @Primary
+    public AccountDTO getAccountDTO() {
+        AccountDTO acount = new AccountDTO();
         acount.setUsername("admin");
         acount.setPassword("123456");
         acount.setRole("admin");

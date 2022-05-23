@@ -32,7 +32,7 @@ and open the template in the editor.
                         <th scope="row">1</th>
                         <td th:text="${item.getUsername()}"></td>
                        <td th:text="${item.getPassword()}"></td>
-                       <td th:text="${item.getRole()}"></td>
+                       <td th:text="${item.role.getName()}"></td>
                        <td>
                            <a class="btn btn-link" th:href="@{'/user/'+ ${item.getUsername()}}">detail</a>
                            <a class="btn btn-link" th:href="@{'/user/edit/'+ ${item.getUsername()}}">edit</a>

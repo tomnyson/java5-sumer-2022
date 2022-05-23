@@ -5,7 +5,9 @@
  */
 package com.teachJava5.teachJava5.controller;
 
-import com.teachJava5.teachJava5.dto.Account;
+import com.teachJava5.teachJava5.domain.Account;
+import com.teachJava5.teachJava5.domain.Role;
+import com.teachJava5.teachJava5.dto.AccountDTO;
 import com.teachJava5.teachJava5.service.AccountService;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,17 +38,17 @@ public class HomeController {
     @Autowired
     AccountService accountService;
     @Autowired
-    Account account;
-
+    AccountDTO accountDto;
+    
     @GetMapping("user")
     // tự động new đối tượng;
     public String home(Model model) {
-        account.setUsername("admin");
-        account.setPassword("123456");
-        account.setRole("creator");
-        model.addAttribute("account", account);
+        accountDto.setUsername("admin");
+        accountDto.setPassword("123456");
+        accountDto.setRole("creator");
+        model.addAttribute("account", accountDto);
         model.addAttribute("message", "hello world 5555");
-        List<Account> accounts = accountService.getList();
+        List<Account> accounts = accountService.findAll();
         System.err.println(accounts.size());
         model.addAttribute("accounts", accounts);
         return "index";  // Return tên của View, model sẽ tự động pass vào view
@@ -63,7 +65,7 @@ public class HomeController {
     public String edit(Model model, @PathVariable("username") String username) {
 
         if (username != null) {
-            Account accountEdit = accountService.findAccountByUsername(username);
+            Account accountEdit = accountService.getById(username);
             model.addAttribute("account", accountEdit);
             return "/users/edit";
         }
@@ -72,7 +74,7 @@ public class HomeController {
 
     @PostMapping("user/create")
     public String createUser(Model model,
-            @Valid @ModelAttribute("account") Account dto,
+            @Valid @ModelAttribute("account") AccountDTO dto,
             BindingResult result) {
         // kiểm tra lỗi
         if (result.hasErrors()) {
@@ -82,9 +84,12 @@ public class HomeController {
 
         }
         System.out.println("dto" + dto.getUsername());
+        Role role = new Role();
+        role.setRoleId(dto.getRole());
         Account copy = new Account();
+        copy.setRole(role);
         BeanUtils.copyProperties(dto, copy);
-        accountService.add(copy);
+        accountService.save(copy);
         return "redirect:/user";  // Return tên của View, model sẽ tự động pass vào view
     }
 
@@ -109,7 +114,7 @@ public class HomeController {
     ) {
 
         if (username != null) {
-            Account detail = accountService.findAccountByUsername(username);
+            Account detail = accountService.getById(username);
             model.addAttribute("account", detail);
             return "users/detail";
         }
@@ -122,7 +127,7 @@ public class HomeController {
     ) {
         System.out.println("com.teachJava5.teachJava5.controller.HomeController.delete()");
         if (username != null) {
-            boolean detail = accountService.remove(username);
+            Optional<Account> detail = accountService.findById(username);
         }
         return "redirect:/user"; // Return tên của View, model sẽ tự động pass vào view
     }

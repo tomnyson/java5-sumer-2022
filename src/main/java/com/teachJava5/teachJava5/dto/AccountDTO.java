@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class Account {
+public class AccountDTO {
     @NotEmpty
     private String username;
     @NotEmpty
