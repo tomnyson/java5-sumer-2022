@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}"
+      >
+    <body>
+        <div layout:fragment="content" class="container">
+
+            <h1>list Role</h1>
+            <a class="btn btn-primary" th:href="@{/admin/role/create/}">create</a>
+            <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+            <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">roleId</th>
+                        <th scope="col">name</th>
+                        <th scope="col">role</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item: ${roles}" >
+                        <td th:text="${item.getRoleId()}"></td>
+                        <td th:text="${item.getName()}"></td>
+                        <td>
+                            <a class="btn btn-link" th:href="@{'/admin/role/'+ ${item.getRoleId()}}">detail</a>
+                            <a class="btn btn-link" th:href="@{'/admin/role/edit/'+ ${item.getRoleId()}}">edit</a>
+                            <a class="btn btn-link" th:href="@{'/admin/role/delete/'+ ${item.getRoleId()}}">delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
