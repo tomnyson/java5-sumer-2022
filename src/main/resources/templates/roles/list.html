@@ -10,33 +10,35 @@ and open the template in the editor.
       >
     <body>
         <div layout:fragment="content" class="container">
-
-            <h1>list Role</h1>
-            <a class="btn btn-primary" th:href="@{/admin/role/create/}">create</a>
-            <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
-            <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">roleId</th>
-                        <th scope="col">name</th>
-                        <th scope="col">role</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="item: ${roles}" >
-                        <td th:text="${item.getRoleId()}"></td>
-                        <td th:text="${item.getName()}"></td>
-                        <td>
-                            <a class="btn btn-link" th:href="@{'/admin/role/'+ ${item.getRoleId()}}">detail</a>
-                            <a class="btn btn-link" th:href="@{'/admin/role/edit/'+ ${item.getRoleId()}}">edit</a>
-                            <a class="btn btn-link" th:href="@{'/admin/role/delete/'+ ${item.getRoleId()}}">delete</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="col-md-12">
+                <div class="d-flex p-2 justify-content-between">
+                    <h3>list Role</h3>
+                    <a class="btn btn-primary" th:href="@{/admin/role/create/}">create</a>
+                </div>
+                <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+                <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">roleId</th>
+                            <th scope="col">name</th>
+                            <th scope="col">action</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item: ${roles}" >
+                            <td th:text="${item.getRoleId()}"></td>
+                            <td th:text="${item.getName()}"></td>
+                            <td>
+                                <a class="btn btn-link" th:href="@{'/admin/role/'+ ${item.getRoleId()}}"><i class="fa-solid fa-info"></i></a>
+                                <a class="btn btn-link" th:href="@{'/admin/role/edit/'+ ${item.getRoleId()}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a class="btn btn-link" th:href="@{'/admin/role/delete/'+ ${item.getRoleId()}}"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
 </body>
 </html>

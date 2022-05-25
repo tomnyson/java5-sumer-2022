@@ -32,7 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author tomnyson
  */
 @Controller
-@RequestMapping("")
+@RequestMapping("admin/user")
 public class HomeController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class HomeController {
     @Autowired
     AccountDTO accountDto;
     
-    @GetMapping("user")
+    @GetMapping("")
     // tự động new đối tượng;
     public String home(Model model) {
         accountDto.setUsername("admin");
@@ -54,14 +54,14 @@ public class HomeController {
         return "index";  // Return tên của View, model sẽ tự động pass vào view
     }
 
-    @GetMapping("user/create")
+    @GetMapping("create")
     public String create(Model model) {
         Account account = new Account();
         model.addAttribute("account", account);
         return "users/create";  // Return tên của View, model sẽ tự động pass vào view
     }
 
-    @GetMapping("user/edit/{username}")
+    @GetMapping("edit/{username}")
     public String edit(Model model, @PathVariable("username") String username) {
 
         if (username != null) {
@@ -72,18 +72,15 @@ public class HomeController {
         return "redirect:/user";
     }
 
-    @PostMapping("user/create")
+    @PostMapping("create")
     public String createUser(Model model,
             @Valid @ModelAttribute("account") AccountDTO dto,
             BindingResult result) {
         // kiểm tra lỗi
         if (result.hasErrors()) {
-            // đẩy lại view và đưa ra thông báo lỗi
-            System.err.println("có lỗi");
             return "/users/create";
 
         }
-        System.out.println("dto" + dto.getUsername());
         Role role = new Role();
         role.setRoleId(dto.getRole());
         Account copy = new Account();
@@ -125,7 +122,6 @@ public class HomeController {
     public String delete(
             @PathVariable("username") String username
     ) {
-        System.out.println("com.teachJava5.teachJava5.controller.HomeController.delete()");
         if (username != null) {
             Optional<Account> detail = accountService.findById(username);
         }

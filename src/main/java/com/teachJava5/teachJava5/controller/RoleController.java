@@ -36,12 +36,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("admin/role")
 public class RoleController {
-    
+
     @Autowired
     RoleService roleService;
     @Autowired
     AccountDTO accountDto;
-    
+
     @GetMapping("")
     // tự động new đối tượng;
     public String index(Model model) {
@@ -49,7 +49,7 @@ public class RoleController {
         model.addAttribute("roles", roles);
         return "roles/list";  // Return tên của View, model sẽ tự động pass vào view
     }
-    
+
     @GetMapping("create")
     public String create(Model model) {
         Role role = new Role();
@@ -62,11 +62,11 @@ public class RoleController {
 
         if (roleId != null) {
             Optional<Role> roleDetail = roleService.findById(roleId);
-            if(roleDetail.isPresent()) {
-             model.addAttribute("role", roleDetail.get());
-              return "/roles/edit";
+            if (roleDetail.isPresent()) {
+                model.addAttribute("role", roleDetail.get());
+                return "/roles/edit";
             }
-           
+
         }
         return "redirect:/user";
     }
@@ -76,12 +76,12 @@ public class RoleController {
             @Valid @ModelAttribute("role") RoleDTO dto,
             BindingResult result,
             RedirectAttributes redirAttrs
-            ) {
+    ) {
         // kiểm tra lỗi
         if (result.hasErrors()) {
             // đẩy lại view và đưa ra thông báo lỗi
             return "/roles/create";
-            
+
         }
         Role role = new Role();
         role.setRoleId(dto.getName());
@@ -90,20 +90,21 @@ public class RoleController {
         redirAttrs.addFlashAttribute("success", "thêm thành công");
         return "redirect:/admin/role";  // Return tên của View, model sẽ tự động pass vào view
     }
-    
+
     @PostMapping("edit")
     public String editRole(Model model,
             @Valid @ModelAttribute("role") RoleDTO dto,
             BindingResult result,
             RedirectAttributes redirAttrs
-            ) {
+    ) {
         // kiểm tra lỗi
         if (result.hasErrors()) {
+            System.out.print("loi");
             // đẩy lại view và đưa ra thông báo lỗi
             return "/roles/edit";
-            
+
         }
-        System.out.print("loi");
+
         Role role = new Role();
 //        role.setRoleId(dto.getName());
         BeanUtils.copyProperties(dto, role);
@@ -126,15 +127,21 @@ public class RoleController {
 //        return "redirect:users";  // Return tên của View, model sẽ tự động pass vào view
 //    }
 //
-//    @GetMapping("user/delete/{username}")
-//    public String delete(
-//            @PathVariable("username") String username
-//    ) {
-//        System.out.println("com.teachJava5.teachJava5.controller.HomeController.delete()");
-//        if (username != null) {
-//            Optional<Account> detail = accountService.findById(username);
-//        }
-//        return "redirect:/user"; // Return tên của View, model sẽ tự động pass vào view
-//    }
+
+    @GetMapping("delete/{roleId}")
+    public String delete(
+            @PathVariable("roleId") String roleId,
+            RedirectAttributes redirAttrs
+    ) {
+        if (roleId != null) {
+            Optional<Role> detail = roleService.findById(roleId);
+            if (detail.isPresent()) {
+                roleService.delete(detail.get());
+                redirAttrs.addFlashAttribute("success", "delete thành công");
+                return "redirect:/admin/role";
+            }
+        }
+        return "redirect:/admin/role";
+    }
 
 }

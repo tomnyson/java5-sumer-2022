@@ -19,22 +19,22 @@ and open the template in the editor.
     
     <body>
         <div  layout:fragment="content"  class="container">
-            <div class="col-md-12">
+            <div class="d-flex justify-content-center mt-5">
                 <div class="card" style="width: 50%">
                     <div class="card-body">
-                        <h5 class="card-title">create user</h5>
-                        <form th:action="@{/role/edit}" th:object="${role}" method="post">
+                        <h5 class="card-title">edit role</h5>
+                        <form th:action="@{/admin/role/edit}" th:object="${role}" method="post">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">username</label>
+                                <label for="exampleInputEmail1">roleId</label>
                                 <input type="text" th:field="*{roleId}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" readonly placeholder="Enter username">
                                 <span class="error" th:if="${#fields.hasErrors('roleId')}"> roleId is required</span>
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">name</label>
+                                <label for="exampleInputPassword1">role name</label>
                                 <input type="text" th:field="*{name}" class="form-control" id="exampleInputPassword1" placeholder="enter name">
                                   <li th:each="err : ${#fields.errors('name')}" th:text="${err}" class="error" />
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary mt-3">Submit</button>
                         </form>
                     </div>
                 </div>

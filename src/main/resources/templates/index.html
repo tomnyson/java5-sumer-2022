@@ -9,10 +9,11 @@ and open the template in the editor.
       layout:decorate="~{layout.html}"
       >
     <body>
-        <div layout:fragment="content" class="container">
-           
-            <h1>list user</h1>
+        <div layout:fragment="content" class="container mt-5">
+            <div class="d-flex p-2 justify-content-between">
+            <h3>list user</h3>
             <a class="btn btn-primary" th:href="@{/user/create/}">create</a>
+            </div>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -30,9 +31,9 @@ and open the template in the editor.
                         <td th:text="${item.getPassword()}"></td>
                         <td th:text="${item.role.getName()}"></td>
                         <td>
-                            <a class="btn btn-link" th:href="@{'/user/'+ ${item.getUsername()}}">detail</a>
-                            <a class="btn btn-link" th:href="@{'/user/edit/'+ ${item.getUsername()}}">edit</a>
-                            <a class="btn btn-link" th:href="@{'/user/delete/'+ ${item.getUsername()}}">delete</a>
+                            <a class="btn btn-link" th:href="@{'/user/'+ ${item.getUsername()}}"><i class="fa-solid fa-info"></i></a>
+                            <a class="btn btn-link" th:href="@{'/user/edit/'+ ${item.getUsername()}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a class="btn btn-link" th:href="@{'/user/delete/'+ ${item.getUsername()}}"><i class="fa-solid fa-trash-can"></i></a>
                         </td>
                     </tr>
                 </tbody>
