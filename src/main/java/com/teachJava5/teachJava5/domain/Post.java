@@ -5,14 +5,12 @@
  */
 package com.teachJava5.teachJava5.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -22,17 +20,16 @@ import lombok.Data;
  */
 @Data
 @Entity
-@Table(name = "roles")
-public class Role implements Serializable {
+@Table(name = "posts")
+public class Post implements Serializable {
     @Id
-    @Column(length = 50, nullable = false)
-    private String roleId;
-    @Column(length = 200, nullable = false)
+    @Column(length = 100, nullable = false)
     private String name;
-     @JsonIgnore
-    @OneToMany(mappedBy = "role",
-            cascade = {CascadeType.ALL})
-    Set<Account> accounts;
-
+    @Column(length = 1000, nullable = false)
+    private String desription;
+     @Column(length = 100, nullable = false)
+    private String image;
+    @ManyToOne
+    @JoinColumn(name = "categorId")
+    private Category category;
 }
-

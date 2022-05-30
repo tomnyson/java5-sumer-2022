@@ -22,17 +22,16 @@ import lombok.Data;
  */
 @Data
 @Entity
-@Table(name = "roles")
-public class Role implements Serializable {
+@Table(name = "categories")
+public class Category implements Serializable {
     @Id
     @Column(length = 50, nullable = false)
-    private String roleId;
+    private String categoryId;
     @Column(length = 200, nullable = false)
     private String name;
-     @JsonIgnore
-    @OneToMany(mappedBy = "role",
+    @OneToMany(mappedBy = "category",
             cascade = {CascadeType.ALL})
-    Set<Account> accounts;
+    Set<Post> posts;
 
 }
 

@@ -20,6 +20,6 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 public class RoleDTO {
     private String roleId;
-    @NotEmpty
+    @NotEmpty(message = "Không được để trông name")
     private String name;
 }

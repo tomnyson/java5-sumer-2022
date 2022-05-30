@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class AccountDTO {
-    @NotEmpty
+    @NotEmpty(message = "Không được để trông name")
     private String username;
     @NotEmpty
     @Size(min = 6)
