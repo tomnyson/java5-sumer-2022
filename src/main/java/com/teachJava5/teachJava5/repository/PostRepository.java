@@ -12,6 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author tomnyson
  */
-public interface PostRepository extends JpaRepository<Post, String>{
+public interface PostRepository extends JpaRepository<Post, Long>{
     
 }

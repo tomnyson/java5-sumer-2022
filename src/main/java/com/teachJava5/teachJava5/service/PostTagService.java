@@ -5,9 +5,8 @@
  */
 package com.teachJava5.teachJava5.service;
 
-import com.teachJava5.teachJava5.domain.Post;
+import com.teachJava5.teachJava5.domain.PostTag;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,16 +14,10 @@ import org.springframework.stereotype.Service;
  * @author tomnyson
  */
 @Service
-public interface PostService {
+public interface PostTagService {
 
-    void delete(Post entity);
+    <S extends PostTag> S save(S entity);
 
-    List<Post> findAll();
-
-    Optional<Post> findById(Long id);
-
-    <S extends Post> S save(S entity);
-
-    Post getById(Long id);
-
+    <S extends PostTag> List<S> saveAllAndFlush(Iterable<S> entities);
+    
 }

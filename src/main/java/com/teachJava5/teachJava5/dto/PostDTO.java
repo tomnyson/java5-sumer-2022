@@ -14,23 +14,24 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
  * @author tomnyson
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class AccountDTO {
+public class PostDTO {
+    private long id;
     @NotEmpty(message = "Không được để trông name")
-    private String username;
+    private String name;
     @NotEmpty
-    @Size(min = 3, max = 200)
-    private String password;
-   @NotNull 
-    private Long role;
-    
+    private String desription;
+    private MultipartFile image;
+    @NotNull
+    private Long categoryId;
+
 }

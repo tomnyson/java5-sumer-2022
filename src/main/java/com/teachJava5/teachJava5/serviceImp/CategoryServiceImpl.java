@@ -30,12 +30,13 @@ public class CategoryServiceImpl implements CategoryService{
         return categoryRepository.save(entity);
     }
 
-    public Optional<Category> findById(String id) {
+    public Optional<Category> findById(Long id) {
         return categoryRepository.findById(id);
     }
 
     public void delete(Category entity) {
         categoryRepository.delete(entity);
     }
+    
     
 }

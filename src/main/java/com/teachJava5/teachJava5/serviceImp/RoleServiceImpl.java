@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author tomnyson
  */
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
     @Autowired
     RoleRepository roleRepository;
 
@@ -30,12 +30,12 @@ public class RoleServiceImpl implements RoleService{
         return roleRepository.save(entity);
     }
 
-    public Optional<Role> findById(String id) {
+    public Optional<Role> findById(Long id) {
         return roleRepository.findById(id);
     }
 
     public void delete(Role entity) {
         roleRepository.delete(entity);
     }
-    
+
 }

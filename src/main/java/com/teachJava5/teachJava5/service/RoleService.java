@@ -21,8 +21,8 @@ public interface RoleService {
 
     List<Role> findAll();
 
-    Optional<Role> findById(String id);
+    Optional<Role> findById(Long id);
 
     <S extends Role> S save(S entity);
-    
+
 }

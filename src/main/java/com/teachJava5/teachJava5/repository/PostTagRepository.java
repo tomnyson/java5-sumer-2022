@@ -5,13 +5,15 @@
  */
 package com.teachJava5.teachJava5.repository;
 
-import com.teachJava5.teachJava5.domain.Category;
+import com.teachJava5.teachJava5.domain.Post;
+import com.teachJava5.teachJava5.domain.PostTag;
+import com.teachJava5.teachJava5.domain.PostTagkey;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author tomnyson
  */
-public interface CategoryRepository extends JpaRepository<Category, Long>{
+public interface PostTagRepository extends JpaRepository<PostTag, PostTagkey>{
     
 }

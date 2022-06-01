@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author tomnyson
  */
 @Service
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
     @Autowired
     PostRepository postRepository;
 
@@ -30,12 +30,16 @@ public class PostServiceImpl implements PostService{
         return postRepository.save(entity);
     }
 
-    public Optional<Post> findById(String id) {
+    public Optional<Post> findById(Long id) {
         return postRepository.findById(id);
     }
 
     public void delete(Post entity) {
         postRepository.delete(entity);
     }
-    
+
+    public Post getById(Long id) {
+        return postRepository.getById(id);
+    }
+
 }

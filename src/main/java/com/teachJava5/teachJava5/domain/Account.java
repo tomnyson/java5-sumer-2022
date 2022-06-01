@@ -5,6 +5,8 @@
  */
 package com.teachJava5.teachJava5.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +23,9 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "accounts")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Account implements Serializable {
     @Id
     @Column(length = 50, nullable = false)

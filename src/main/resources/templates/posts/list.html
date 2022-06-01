@@ -12,8 +12,8 @@ and open the template in the editor.
         <div layout:fragment="content" class="container">
             <div class="col-md-12">
                 <div class="d-flex p-2 justify-content-between">
-                    <h3>list categories</h3>
-                    <a class="btn btn-primary" th:href="@{/admin/category/create/}">create</a>
+                    <h3>list Post</h3>
+                    <a class="btn btn-primary" th:href="@{/admin/post/create/}">create</a>
                 </div>
                 <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
                 <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
@@ -22,18 +22,22 @@ and open the template in the editor.
                         <tr>
                             <th scope="col">Id</th>
                             <th scope="col">name</th>
+                             <th scope="col">Image</th>
+                                <th scope="col">category</th>
                             <th scope="col">action</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="item: ${categories}" >
+                        <tr th:each="item: ${posts}" >
                             <td th:text="${item.getId()}"></td>
                             <td th:text="${item.getName()}"></td>
+                              <td th:text="${item.getImage()}"></td>
+                                <td th:text="${item.category.getName()}"></td>
                             <td>
-                                <a class="btn btn-link" th:href="@{'/admin/category/'+ ${item.getId()}}"><i class="fa-solid fa-info"></i></a>
-                                <a class="btn btn-link" th:href="@{'/admin/category/edit/'+ ${item.getId()}}"><i class="fa-solid fa-pen-to-square"></i></a>
-                                <a class="btn btn-link" th:href="@{'/admin/category/delete/'+ ${item.getId()}}"><i class="fa-solid fa-trash-can"></i></a>
+                                <a class="btn btn-link" th:href="@{'/admin/post/'+ ${item.getId()}}"><i class="fa-solid fa-info"></i></a>
+                                <a class="btn btn-link" th:href="@{'/admin/post/edit/'+ ${item.getId()}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                <a class="btn btn-link" th:href="@{'/admin/post/delete/'+ ${item.getId()}}"><i class="fa-solid fa-trash-can"></i></a>
                             </td>
                         </tr>
                     </tbody>

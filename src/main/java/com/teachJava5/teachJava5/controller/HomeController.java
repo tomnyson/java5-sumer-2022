@@ -39,26 +39,22 @@ public class HomeController {
     AccountService accountService;
     @Autowired
     AccountDTO accountDto;
-    
+
     @GetMapping("")
     // tự động new đối tượng;
     public String home(Model model) {
-        accountDto.setUsername("admin");
-        accountDto.setPassword("123456");
-        accountDto.setRole("creator");
-        model.addAttribute("account", accountDto);
         model.addAttribute("message", "hello world 5555");
         List<Account> accounts = accountService.findAll();
         System.err.println(accounts.size());
         model.addAttribute("accounts", accounts);
-        return "index";  // Return tên của View, model sẽ tự động pass vào view
+        return "index"; // Return tên của View, model sẽ tự động pass vào view
     }
 
     @GetMapping("create")
     public String create(Model model) {
         Account account = new Account();
         model.addAttribute("account", account);
-        return "users/create";  // Return tên của View, model sẽ tự động pass vào view
+        return "users/create"; // Return tên của View, model sẽ tự động pass vào view
     }
 
     @GetMapping("edit/{username}")
@@ -66,8 +62,14 @@ public class HomeController {
 
         if (username != null) {
             Account accountEdit = accountService.getById(username);
-            model.addAttribute("account", accountEdit);
-            return "/users/edit";
+            if (accountEdit != null) {
+                AccountDTO dto = new AccountDTO();
+                BeanUtils.copyProperties(accountEdit, dto);
+                System.err.println("accountEdit" + accountEdit.getUsername());
+                model.addAttribute("account", dto);
+                return "/users/edit";
+            }
+
         }
         return "redirect:/user";
     }
@@ -78,28 +80,26 @@ public class HomeController {
             BindingResult result) {
         // kiểm tra lỗi
         if (result.hasErrors()) {
-            return "/users/create";
+            return "users/create";
 
         }
         Role role = new Role();
-        role.setRoleId(dto.getRole());
         Account copy = new Account();
+        role.setRoleId(dto.getRole());
         copy.setRole(role);
         BeanUtils.copyProperties(dto, copy);
         accountService.save(copy);
-        return "redirect:/user";  // Return tên của View, model sẽ tự động pass vào view
+        return "redirect:/admin/user"; // Return tên của View, model sẽ tự động pass vào view
     }
 
     @GetMapping("user/search")
     @ResponseBody
-    public String search(@RequestParam("keyword") Optional<String> keyword
-    ) {
-        return "index";  // Return tên của View, model sẽ tự động pass vào view
+    public String search(@RequestParam("keyword") Optional<String> keyword) {
+        return "index"; // Return tên của View, model sẽ tự động pass vào view
     }
 
     @GetMapping("user/redirect")
-    public String redirect(RedirectAttributes params
-    ) {
+    public String redirect(RedirectAttributes params) {
         params.addAttribute("message", "rediect url");
         return "redirect:/admin/user";
     }
@@ -107,21 +107,19 @@ public class HomeController {
     // get request has path
     @GetMapping("user/{username}")
     public String detail(Model model,
-            @PathVariable("username") String username
-    ) {
+            @PathVariable("username") String username) {
 
         if (username != null) {
             Account detail = accountService.getById(username);
             model.addAttribute("account", detail);
             return "users/detail";
         }
-        return "redirect:users";  // Return tên của View, model sẽ tự động pass vào view
+        return "redirect:users"; // Return tên của View, model sẽ tự động pass vào view
     }
 
     @GetMapping("user/delete/{username}")
     public String delete(
-            @PathVariable("username") String username
-    ) {
+            @PathVariable("username") String username) {
         if (username != null) {
             Optional<Account> detail = accountService.findById(username);
         }

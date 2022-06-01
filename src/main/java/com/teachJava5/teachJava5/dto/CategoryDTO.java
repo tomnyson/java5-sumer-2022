@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.Length;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleDTO {
+public class CategoryDTO {
     private long id;
     @NotEmpty(message = "Không được để trông name")
     private String name;

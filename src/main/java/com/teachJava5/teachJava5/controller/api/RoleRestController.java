@@ -50,7 +50,7 @@ public class RoleRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Role> detail(@PathVariable("id") String id) {
+    public ResponseEntity<Role> detail(@PathVariable("id") Long id) {
         Optional<Role> currentData = roleService.findById(id);
         if (currentData.isPresent()) {
             return new ResponseEntity<Role>(currentData.get(), HttpStatus.OK);
@@ -59,7 +59,7 @@ public class RoleRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Role> delete(@PathVariable("id") String id) {
+    public ResponseEntity<Role> delete(@PathVariable("id") Long id) {
         Optional<Role> currentData = roleService.findById(id);
         if (currentData.isPresent()) {
             roleService.delete(currentData.get());

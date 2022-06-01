@@ -5,16 +5,20 @@
  */
 package com.teachJava5.teachJava5.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.Generated;
 
 /**
  *
@@ -24,15 +28,12 @@ import lombok.Data;
 @Entity
 @Table(name = "roles")
 public class Role implements Serializable {
-    @Id
-    @Column(length = 50, nullable = false)
-    private String roleId;
-    @Column(length = 200, nullable = false)
-    private String name;
-     @JsonIgnore
-    @OneToMany(mappedBy = "role",
-            cascade = {CascadeType.ALL})
-    Set<Account> accounts;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private long roleId;
+        @Column(length = 200, nullable = false)
+        private String name;
+        @OneToMany(mappedBy = "role", cascade = { CascadeType.ALL })
+        Set<Account> accounts;
 
 }
-

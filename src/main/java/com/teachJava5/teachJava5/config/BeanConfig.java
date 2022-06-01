@@ -23,7 +23,8 @@ public class BeanConfig {
         AccountDTO acount = new AccountDTO();
         acount.setUsername("admin");
         acount.setPassword("123456");
-        acount.setRole("admin");
+        acount.setRole(1L);
         return acount;
     }
+
 }

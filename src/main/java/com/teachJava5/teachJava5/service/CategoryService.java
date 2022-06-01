@@ -22,7 +22,7 @@ public interface CategoryService {
 
     List<Category> findAll();
 
-    Optional<Category> findById(String id);
+    Optional<Category> findById(Long id);
 
     <S extends Category> S save(S entity);
 

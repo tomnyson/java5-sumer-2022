@@ -16,7 +16,7 @@ and open the template in the editor.
     color: red;
 }
 .footer {
-   position: fixed;
+   /*position: fixed;*/
   left: 0;
   bottom: 0;
   width: 100%;

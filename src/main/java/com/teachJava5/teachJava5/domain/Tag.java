@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
@@ -28,9 +32,8 @@ import lombok.Data;
  */
 @Data
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-@Table(name = "categories")
-public class Category implements Serializable {
+@Table(name = "tags")
+public class Tag implements Serializable {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private long id;
@@ -38,8 +41,8 @@ public class Category implements Serializable {
         @Column(length = 200, nullable = false)
         private String name;
 
-        @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-        @JsonBackReference
-        Set<Post> posts;
-
+        // @ManyToMany(mappedBy = "tags")
+        // private Set<Post> posts = new HashSet<>();
+        @OneToMany(mappedBy = "post")
+        Set<PostTag> postTag = new HashSet<>();
 }
