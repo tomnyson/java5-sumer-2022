@@ -21,6 +21,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
@@ -28,18 +30,21 @@ import lombok.Data;
  */
 @Data
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "categories")
 public class Category implements Serializable {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private long id;
 
-        @Column(length = 200, nullable = false)
-        private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-        @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
-        @JsonBackReference
-        Set<Post> posts;
+    @Column(length = 200, nullable = false)
+    private String name;
+
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+//        @JsonBackReference
+    Set<Post> posts;
 
 }
