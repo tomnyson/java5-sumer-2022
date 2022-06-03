@@ -96,11 +96,9 @@ public class RoleController {
             return "/roles/edit";
 
         }
-
         Role role = new Role();
-        // role.setRoleId(dto.getName());
         BeanUtils.copyProperties(dto, role);
-        roleService.save(role);
+         roleService.save(role);
         redirAttrs.addFlashAttribute("success", "edit thành công");
         return "redirect:/admin/role"; // Return tên của View, model sẽ tự động pass vào view
     }

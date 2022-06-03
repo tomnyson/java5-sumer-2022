@@ -6,6 +6,9 @@
 package com.teachJava5.teachJava5.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -19,7 +22,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Generated;
 import lombok.ToString;
 
 /**
@@ -28,18 +30,21 @@ import lombok.ToString;
  */
 @Data
 @Entity
-@Table(name = "roles")
-public class Role implements Serializable {
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@Table(name = "categorie_products")
+public class CategoryProduct implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long roleId;
+    private long id;
+
     @Column(length = 200, nullable = false)
     private String name;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToMany(mappedBy = "role", cascade = {CascadeType.ALL})
-    Set<Account> accounts;
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+//        @JsonBackReference
+    Set<Product> products;
 
 }

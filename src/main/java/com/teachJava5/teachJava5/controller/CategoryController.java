@@ -37,9 +37,7 @@ public class CategoryController {
 
     @Autowired
     CategoryService categoryService;
-    @Autowired
-    AccountDTO accountDto;
-
+    
     @GetMapping("")
     // tự động new đối tượng;
     public String index(Model model) {
@@ -56,7 +54,7 @@ public class CategoryController {
     }
 
     @PostMapping("create")
-    public String createRole(Model model,
+    public String cateCategory(Model model,
             @Valid @ModelAttribute("category") CategoryDTO dto,
             BindingResult result,
             RedirectAttributes redirAttrs
@@ -67,6 +65,7 @@ public class CategoryController {
             return "/categories/create";
 
         }
+        
         Category category = new Category();
         BeanUtils.copyProperties(dto, category);
         categoryService.save(category);
@@ -96,13 +95,13 @@ public class CategoryController {
         return "redirect:/admin/category";  // Return tên của View, model sẽ tự động pass vào view
     }
 
-    @GetMapping("delete/{roleId}")
+    @GetMapping("delete/{categoryId}")
     public String delete(
-            @PathVariable("roleId") Long roleId,
+            @PathVariable("categoryId") Long categoryId,
             RedirectAttributes redirAttrs
     ) {
-        if (roleId != null) {
-            Optional<Category> detail = categoryService.findById(roleId);
+        if (categoryId != null) {
+            Optional<Category> detail = categoryService.findById(categoryId);
             if (detail.isPresent()) {
                 categoryService.delete(detail.get());
                 redirAttrs.addFlashAttribute("success", "delete thành công");
