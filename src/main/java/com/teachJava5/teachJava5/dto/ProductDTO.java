@@ -6,9 +6,11 @@
 package com.teachJava5.teachJava5.dto;
 
 import java.util.Date;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,17 +27,19 @@ import org.hibernate.validator.constraints.Length;
 public class ProductDTO {
 
     private long id;
-    @NotEmpty(message = "Không được để trống name")
+   @NotEmpty(message = "name không để trống")
     private String name;
+   @NotEmpty(message = "desription không để trống")
     private String desription;
+   @NotEmpty(message = "name không để trống")
     private String image;
-    @NotBlank
-    @Size(min = 1)
+    @Min(1)
     private Double price;
+    @NotEmpty(message = "shortDesription không để trống")
     private String shortDesription;
-    private Date publicationDate;
-    @NotBlank
-    @Size(min = 0, max = 100)
+    private String publicationDate;
+    @Min(1)
+    @Max(100)
     private Double sale;
     private Boolean bestSeller;
     private Long categoryId;

@@ -15,14 +15,20 @@ import com.teachJava5.teachJava5.service.CategoryProductService;
 import com.teachJava5.teachJava5.service.CategoryService;
 import com.teachJava5.teachJava5.service.ProductService;
 import com.teachJava5.teachJava5.utils.TextHelper;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,19 +46,18 @@ public class ProductController {
 
     @Autowired
     CategoryService categoryService;
-    @Autowired 
+    @Autowired
     ProductService productService;
-    
+
     @Autowired
     CategoryProductService categoryProductService;
-    
-    
+
     @ModelAttribute("categories")
     public List<CategoryProduct> getCategories() {
         List<CategoryProduct> categories = categoryProductService.findAll();
         return categories;
     }
-    
+
     @GetMapping("")
     // tự động new đối tượng;
     public String index(Model model) {
@@ -69,23 +74,39 @@ public class ProductController {
     }
 
     @PostMapping("create")
-    public String cateCategory(Model model,
-            @Valid @ModelAttribute("category") CategoryDTO dto,
+    public String createProduct(Model model,
+            @Valid @ModelAttribute("product") ProductDTO dto,
             BindingResult result,
             RedirectAttributes redirAttrs
     ) {
         // kiểm tra lỗi
         if (result.hasErrors()) {
+            System.err.println("lỗi");
             // đẩy lại view và đưa ra thông báo lỗi
-            return "/categories/create";
+
+            List<FieldError> errors = result.getFieldErrors();
+            for (FieldError error : errors) {
+                System.out.println(error.getObjectName() + " - " + error.getDefaultMessage());
+            }
+            return "/products/create";
 
         }
-        
-        Category category = new Category();
-        BeanUtils.copyProperties(dto, category);
-        categoryService.save(category);
+
+        Product product = new Product();
+        BeanUtils.copyProperties(dto, product);
+        try {
+            System.out.println("date"+dto.getPublicationDate());
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dto.getPublicationDate());
+           product.setPublicationDate(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        CategoryProduct cat = new CategoryProduct();
+        cat.setId(dto.getCategoryId());
+        product.setCategory(cat);
+        productService.save(product);
         redirAttrs.addFlashAttribute("success", "thêm thành công");
-        return "redirect:/admin/category";  // Return tên của View, model sẽ tự động pass vào view
+        return "redirect:/admin/product";  // Return tên của View, model sẽ tự động pass vào view
     }
 
     @PostMapping("edit")
@@ -97,6 +118,11 @@ public class ProductController {
         // kiểm tra lỗi
         if (result.hasErrors()) {
             System.out.print("loi");
+
+            List<FieldError> errors = result.getFieldErrors();
+            for (FieldError error : errors) {
+                System.out.println(error.getObjectName() + " - " + error.getDefaultMessage());
+            }
             // đẩy lại view và đưa ra thông báo lỗi
             return "/categories/edit";
 
@@ -107,7 +133,7 @@ public class ProductController {
         BeanUtils.copyProperties(dto, category);
         categoryService.save(category);
         redirAttrs.addFlashAttribute("success", "edit thành công");
-        return "redirect:/admin/category";  // Return tên của View, model sẽ tự động pass vào view
+        return "redirect:/admin/product";  // Return tên của View, model sẽ tự động pass vào view
     }
 
     @GetMapping("delete/{categoryId}")
