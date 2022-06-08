@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}"
+      >
+    <body>
+        <div layout:fragment="content" class="container mt-5">
+            <div class="d-flex p-2 justify-content-between">
+            <h3>list user</h3>
+            <a class="btn btn-primary" th:href="@{/admin/user/create/}">create</a>
+            </div>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">username</th>
+                        <th scope="col">password</th>
+                        <th scope="col">role</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item: ${accounts}" >
+                        <th scope="row">1</th>
+                        <td th:text="${item.getUsername()}"></td>
+                        <td th:text="${item.getPassword()}"></td>
+                        <td th:text="${item.role.getName()}"></td>
+                        <td>
+                            <a class="btn btn-link" th:href="@{'/admin/user/'+ ${item.getUsername()}}"><i class="fa-solid fa-info"></i></a>
+                            <a class="btn btn-link" th:href="@{'/admin/user/edit/'+ ${item.getUsername()}}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a class="btn btn-link" th:href="@{'/admin/user/delete/'+ ${item.getUsername()}}"><i class="fa-solid fa-trash-can"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

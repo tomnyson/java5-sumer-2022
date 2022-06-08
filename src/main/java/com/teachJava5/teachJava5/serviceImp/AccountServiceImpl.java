@@ -147,6 +147,10 @@ public class AccountServiceImpl implements AccountService {
     public <S extends Account, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return accountRepository.findBy(example, queryFunction);
     }
+
+    public Account checkLogin(String username, String password) {
+        return accountRepository.checkLogin(username, password);
+    }
     
     
 }

@@ -23,7 +23,7 @@ and open the template in the editor.
                 <div class="card" style="width: 50%">
                     <div class="card-body">
                         <h5 class="card-title">create product</h5>
-                        <form th:action="@{/admin/product/create}" th:object="${product}" method="post">
+                        <form th:action="@{/admin/product/create}" th:object="${product}" method="post"   enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">title</label>
                                 <input type="text" th:field="*{name}" class="form-control" id="exampleInputEmail1" 

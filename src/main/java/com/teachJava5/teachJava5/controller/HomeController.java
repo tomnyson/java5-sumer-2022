@@ -92,20 +92,20 @@ public class HomeController {
         return "redirect:/admin/user"; // Return tên của View, model sẽ tự động pass vào view
     }
 
-    @GetMapping("user/search")
+    @GetMapping("search")
     @ResponseBody
     public String search(@RequestParam("keyword") Optional<String> keyword) {
         return "index"; // Return tên của View, model sẽ tự động pass vào view
     }
 
-    @GetMapping("user/redirect")
+    @GetMapping("redirect")
     public String redirect(RedirectAttributes params) {
         params.addAttribute("message", "rediect url");
         return "redirect:/admin/user";
     }
 
     // get request has path
-    @GetMapping("user/{username}")
+    @GetMapping("{username}")
     public String detail(Model model,
             @PathVariable("username") String username) {
 
@@ -117,13 +117,14 @@ public class HomeController {
         return "redirect:users"; // Return tên của View, model sẽ tự động pass vào view
     }
 
-    @GetMapping("user/delete/{username}")
+    @GetMapping("delete/{username}")
     public String delete(
             @PathVariable("username") String username) {
         if (username != null) {
             Optional<Account> detail = accountService.findById(username);
+            accountService.deleteById(username);
         }
-        return "redirect:/user"; // Return tên của View, model sẽ tự động pass vào view
+        return "redirect:/admin/user"; // Return tên của View, model sẽ tự động pass vào view
     }
 
 }

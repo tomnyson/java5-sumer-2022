@@ -23,14 +23,11 @@ import org.springframework.stereotype.Component;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Component
-public class AccountDTO {
+public class AccountLoginDTO {
     @NotEmpty(message = "Không được để trông name")
     private String username;
     @NotEmpty
     @Size(min = 3, max = 200)
     private String password;
-    @NotNull 
-    private Long role;
     
 }

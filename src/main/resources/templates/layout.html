@@ -30,9 +30,12 @@ and open the template in the editor.
                         <a class="nav-item nav-link" th:href="@{/admin/category}">Category</a>
                           <a class="nav-item nav-link" th:href="@{/admin/category-product}">Category product</a>
                         <a class="nav-item nav-link" th:href="@{/admin/product}">Product</a>
-                          <a class="nav-item nav-link" th:href="@{/admin/post}">Post</a>
+                        <a class="nav-item nav-link" th:href="@{/admin/post}">Post</a>
                     </div>
                 </div>
+                <a th:if="${session.username}" class="nav-item nav-link" th:href="@{/admin/post}"><span th:text="'Hi:'+ ${session.username}"></span>
+                    <a class="btn-link" th:href="@{/logout}">đăng xuất</a>
+                </a>
             </nav>
             <div class="row">
                 <div class="col-2 mt-3">

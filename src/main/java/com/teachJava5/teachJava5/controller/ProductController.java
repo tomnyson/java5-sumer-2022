@@ -13,8 +13,10 @@ import com.teachJava5.teachJava5.dto.CategoryDTO;
 import com.teachJava5.teachJava5.dto.ProductDTO;
 import com.teachJava5.teachJava5.service.CategoryProductService;
 import com.teachJava5.teachJava5.service.CategoryService;
+import com.teachJava5.teachJava5.service.FileService;
 import com.teachJava5.teachJava5.service.ProductService;
 import com.teachJava5.teachJava5.utils.TextHelper;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,6 +29,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -101,10 +104,17 @@ public class ProductController {
         } catch (ParseException ex) {
             Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        String fileName = StringUtils.cleanPath(dto.getImage().getOriginalFilename());
         CategoryProduct cat = new CategoryProduct();
         cat.setId(dto.getCategoryId());
         product.setCategory(cat);
+        product.setImage(fileName);
         productService.save(product);
+        try {
+            FileService.saveFile("src/main/resources/static/images", fileName, dto.getImage());
+        } catch (IOException ex) {
+            Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         redirAttrs.addFlashAttribute("success", "thêm thành công");
         return "redirect:/admin/product";  // Return tên của View, model sẽ tự động pass vào view
     }
@@ -136,20 +146,20 @@ public class ProductController {
         return "redirect:/admin/product";  // Return tên của View, model sẽ tự động pass vào view
     }
 
-    @GetMapping("delete/{categoryId}")
+    @GetMapping("delete/{productId}")
     public String delete(
-            @PathVariable("categoryId") Long categoryId,
+            @PathVariable("productId") Long productId,
             RedirectAttributes redirAttrs
     ) {
-        if (categoryId != null) {
-            Optional<Category> detail = categoryService.findById(categoryId);
+        if (productId != null) {
+            Optional<Product> detail = productService.findById(productId);
             if (detail.isPresent()) {
-                categoryService.delete(detail.get());
+                productService.delete(detail.get());
                 redirAttrs.addFlashAttribute("success", "delete thành công");
-                return "redirect:/admin/category";
+                return "redirect:/admin/product";
             }
         }
-        return "redirect:/admin/role";
+        return "redirect:/admin/product";
     }
 
     @GetMapping("edit/{categoryId}")

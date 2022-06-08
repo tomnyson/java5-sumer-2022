@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -27,12 +28,12 @@ import org.hibernate.validator.constraints.Length;
 public class ProductDTO {
 
     private long id;
-   @NotEmpty(message = "name không để trống")
+     @NotEmpty(message = "name không để trống")
     private String name;
-   @NotEmpty(message = "desription không để trống")
+    @NotEmpty(message = "desription không để trống")
     private String desription;
-   @NotEmpty(message = "name không để trống")
-    private String image;
+    @NotNull
+    private MultipartFile image;
     @Min(1)
     private Double price;
     @NotEmpty(message = "shortDesription không để trống")

@@ -83,5 +83,8 @@ public interface AccountService {
     <S extends com.teachJava5.teachJava5.domain.Account> List<S> saveAllAndFlush(Iterable<S> entities);
 
     <S extends com.teachJava5.teachJava5.domain.Account> S saveAndFlush(S entity);
+
+    Account checkLogin(String username, String password);
+    
     
 }
