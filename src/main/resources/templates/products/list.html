@@ -38,7 +38,7 @@ and open the template in the editor.
                                      height="100px" th:src="@{'/image/'+${item.getImage()}}"</td>
                             <td th:text="${item.getShortDesription()}"></td>
                             <td>
-                                <a class="btn btn-link" th:href="@{'/admin/product/'+ ${item.getId()}}">buy</a>
+                                <a class="btn btn-link" th:href="@{'/cart/add/'+ ${item.getId()}}">add cart</a>
                                 <a class="btn btn-link" th:href="@{'/admin/product/'+ ${item.getId()}}"><i class="fa-solid fa-info"></i></a>
                                 <a class="btn btn-link" th:href="@{'/admin/product/edit/'+ ${item.getId()}}"><i class="fa-solid fa-pen-to-square"></i></a>
                                 <a class="btn btn-link" th:href="@{'/admin/product/delete/'+ ${item.getId()}}"><i class="fa-solid fa-trash-can"></i></a>
