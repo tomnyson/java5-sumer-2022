@@ -21,18 +21,18 @@ public class AdminAuthencationInterceptor implements HandlerInterceptor{
     @Autowired
     private HttpSession session;
     
-//    @Override
-//    public boolean preHandle(HttpServletRequest request, HttpServletResponse 
-//            response, Object handler) throws Exception {
-//        System.out.println("preHandle"+ request.getRequestURI());
-//       if(session.getAttribute("username") != null) {
-//           return true;
-//       }
-//       // trả về lại trang cũ khi login thành công
-//       session.setAttribute("request-url", request.getRequestURI());
-//       response.sendRedirect("/login");
-//       return false;
-//    }
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse 
+            response, Object handler) throws Exception {
+        System.out.println("preHandle"+ request.getRequestURI());
+       if(session.getAttribute("username") != null) {
+           return true;
+       }
+       // trả về lại trang cũ khi login thành công
+       session.setAttribute("request-url", request.getRequestURI());
+       response.sendRedirect("/login");
+       return false;
+    }
     
     
 }

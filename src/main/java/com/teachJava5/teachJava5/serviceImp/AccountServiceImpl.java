@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -93,6 +94,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public <S extends Account> S save(S entity) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         return accountRepository.save(entity);
     }
 

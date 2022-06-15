@@ -8,9 +8,13 @@ package com.teachJava5.teachJava5.controller;
 import com.teachJava5.teachJava5.domain.Account;
 import com.teachJava5.teachJava5.domain.Role;
 import com.teachJava5.teachJava5.dto.AccountDTO;
+import com.teachJava5.teachJava5.dto.Mail;
 import com.teachJava5.teachJava5.service.AccountService;
+import com.teachJava5.teachJava5.service.MailService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -39,7 +43,8 @@ public class HomeController {
     AccountService accountService;
     @Autowired
     AccountDTO accountDto;
-
+     @Autowired
+    private MailService mailService;
     @GetMapping("")
     // tự động new đối tượng;
     public String home(Model model) {
@@ -47,6 +52,18 @@ public class HomeController {
         List<Account> accounts = accountService.findAll();
         System.err.println(accounts.size());
         model.addAttribute("accounts", accounts);
+        Mail mail = new Mail();
+            mail.setTo("tabletkindfire@gmail.com");
+            mail.setFrom("tabletkindfire@gmail.com");
+            mail.setSubject("thông báo");
+            Map<String, Object> props = new HashMap<String, Object>();
+            props.put("name", "tomnyson");
+            mail.setProps(props);
+            try {
+                mailService.sendEmail(mail);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         return "index"; // Return tên của View, model sẽ tự động pass vào view
     }
 

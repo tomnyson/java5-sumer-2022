@@ -8,13 +8,19 @@ package com.teachJava5.teachJava5.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  *
@@ -35,4 +41,9 @@ public class Account implements Serializable {
     @ManyToOne
     @JoinColumn(name = "roleId")
     private Role role;
+    
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    Set<Order> orders;
 }

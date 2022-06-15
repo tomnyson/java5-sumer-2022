@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html mlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div layout:fragment="content" class="container mt-5">
+            <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+            <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+            <a th:href="@{'/admin/product'}">tiếp tục mua hàng</a> </br>
+
+            <form th:action="@{/cart/checkout}"  th:object="${order}" method="POST">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">tên người nhận</label>
+                    <input type="text" class="form-control" th:field="*{customerName}" name="customerName" id="exampleInputEmail1" aria-describedby="emailHelp">
+                      <span class="error" th:if="${#fields.hasErrors('customerName')}"> customerName is required</span>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">địa chỉ</label>
+                    <input type="text" name="address"  th:field="*{address}"  class="form-control" id="exampleInputPassword1">
+                    <span class="error" th:if="${#fields.hasErrors('address')}"> address is required</span>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">số điện thoại</label>
+                    <input type="phone" th:field="*{phone}" name="phone" class="form-control" id="exampleInputPassword1"/>
+                     <span class="error" th:if="${#fields.hasErrors('phone')}"> phone is required</span>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">ghi chú</label>
+                    <input type="note"  th:field="*{note}" name="note" class="form-control" id="exampleInputPassword1">
+                     <span class="error" th:if="${#fields.hasErrors('note')}"> note is required</span>
+                </div>
+                <div class="mb-3">
+                    <input class="form-check-input" checked type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        COD(trả bằng tiền mặt khi  nhận hàng)
+                    </label>
+                    <input type="hidden" name="total" value="<?= $total ?>"/>
+                </div>
+                <button type="submit" name="action" value="checkout" class="btn btn-primary">Thanh toán</button>               
+
+            </form>
+            <div  class="table-responsive-sm">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">Tên</th>
+                            <th scope="col">hình ảnh</th>
+                            <th scope="col">giá</th>
+                            <th scope="col">số lượng</th>
+                            <th scope="col">tổng tiền</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody  th:if="${session.cart != null}">
+                        <tr th:each="item: ${session.cart.getCarts()}">
+                            <td th:text="${item.getMaSP()}">1</td>
+                            <td th:text="${item.title}"></td>
+                            <td><img th:src="@{'/image/'+${item.getImage()}}" onerror="this.src='https://via.placeholder.com/100'" width="100px"></td>
+                            <td th:text="${item.price}">3131</td>
+                            <td th:text="${item.soLuong}">31313</td>
+                            <td th:text="${item.price*item.soLuong}">3131313</td>
+                            <td>
+                                <a th:href="@{'/cart/add/'+ ${item.getMaSP()}}" class="btn btn-success">thêm </a>
+                                <a th:href="@{'/cart/remove/'+ ${item.getMaSP()}}" class="btn btn-danger">xóa</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody th:unless="${session.cart != null}">
+                        <tr>
+                             <td colspan='6' >chưa có sản phẩm nào trong giỏ hàng</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+                <h5 class='text text-danger' th:if="${session.cart != null}" th:text="'total: '+ ${session.cart.total()}"></h6>
+            </div>
+        </div>
+
+    </body>
+</html>

@@ -73,5 +73,8 @@ public class Product implements Serializable {
 //    // private Set<Tag> tags = new HashSet<>();
 //    @OneToMany(mappedBy = "tag")
 //    private Set<PostTag> postTag = new HashSet<>();
+    
+    @OneToMany(mappedBy = "product")
+    Set<OrderDetail> orderDetails;
 
 }
