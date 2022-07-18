@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,6 +61,17 @@ public class APIRoleController {
     
     @PostMapping("")
     public Role createRole(@Valid @RequestBody RoleDTO roleDTO) {
+        if(roleDTO != null) {
+              Role role = new Role();
+              BeanUtils.copyProperties(roleDTO, role);
+            Role create = roleService.save(role);
+            return create;
+        }
+        return  null;
+    }
+    
+    @PutMapping("/{id}")
+    public Role update(@Valid @RequestBody RoleDTO roleDTO) {
         if(roleDTO != null) {
               Role role = new Role();
               BeanUtils.copyProperties(roleDTO, role);
