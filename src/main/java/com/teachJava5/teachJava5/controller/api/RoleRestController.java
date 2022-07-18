@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author tomnyson
  */
 @Controller
-@RequestMapping("api/role")
+@RequestMapping("api/test")
 public class RoleRestController {
 
     @Autowired
