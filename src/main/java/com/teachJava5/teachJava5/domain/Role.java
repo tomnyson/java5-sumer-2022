@@ -6,6 +6,7 @@
 package com.teachJava5.teachJava5.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -39,6 +40,7 @@ public class Role implements Serializable {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
+    @JsonIgnore
     @OneToMany(mappedBy = "role", cascade = {CascadeType.ALL})
     Set<Account> accounts;
 

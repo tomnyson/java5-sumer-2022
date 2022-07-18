@@ -4,6 +4,7 @@
  */
 package com.teachJava5.teachJava5.domain;
 
+import java.util.Date;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -37,6 +39,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "username")
     private Account account;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Date createdDate;
     int status;
     @OneToMany(mappedBy = "order")
     Set<OrderDetail> orderDetails;

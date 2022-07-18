@@ -4,6 +4,7 @@
  */
 package com.teachJava5.teachJava5.controller.api;
 
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.teachJava5.teachJava5.domain.Role;
 import com.teachJava5.teachJava5.dto.RoleDTO;
 import com.teachJava5.teachJava5.service.RoleService;
@@ -12,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,27 +59,23 @@ public class APIRoleController {
     }
     
     @PostMapping("")
-    public ProductDTO createProduct(@RequestBody ProductDTO product) {
-        if(product != null) {
-            listProduct.add(product);
-            return product;
+    public Role createRole(@Valid @RequestBody RoleDTO roleDTO) {
+        if(roleDTO != null) {
+              Role role = new Role();
+              BeanUtils.copyProperties(roleDTO, role);
+            Role create = roleService.save(role);
+            return create;
         }
         return  null;
     }
     
     @DeleteMapping("/{id}")
-    public ProductDTO removeProduct(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
+    public Optional<Role> remove(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
         if(id != null) {
-           ProductDTO detail = null;
-            for (ProductDTO productDTO : listProduct) {
-                if(productDTO.getId()== id){
-                     detail = productDTO;
-                     break;
-                }
-                        
-            }
+            Optional<Role> detail = roleService.findById(id);
+            
             if(detail != null) {
-                listProduct.remove(detail);
+              roleService.delete(detail.get());
                 return detail;
             }
             response.setStatus( HttpServletResponse.SC_BAD_REQUEST  );
