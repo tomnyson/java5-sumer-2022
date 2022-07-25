@@ -6,6 +6,8 @@
 package com.teachJava5.teachJava5.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.Set;
@@ -29,19 +31,18 @@ import lombok.ToString;
 @Data
 @Entity
 @Table(name = "accounts")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Account implements Serializable {
     @Id
     @Column(length = 50, nullable = false)
     private String username;
     @Column(length = 200, nullable = false)
     private String password;
+   
     @ManyToOne
     @JoinColumn(name = "roleId")
     private Role role;
     
+    @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
