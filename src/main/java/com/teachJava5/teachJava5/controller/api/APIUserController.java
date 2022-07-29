@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -49,46 +50,38 @@ public class APIUserController {
         return ResponseEntity.ok(accountService.findAll());
     }
 
-//    public List<Account> getList() {
-//        return accountService.findAll();
-//    }
     @GetMapping("/{username}")
-    public Account getDetail(@PathVariable("username") String username,
+    public ResponseEntity<Account> getDetail(@PathVariable("username") String username,
             HttpServletRequest request, HttpServletResponse response) {
         if (username != null) {
             Optional<Account> detail = accountService.findById(username);
             if (!detail.isEmpty()) {
-                return detail.get();
+                return ResponseEntity.ok(detail.get());
             }
         }
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return null;
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/login")
-    public Account login(@Valid @RequestBody LoginDTO login) {
-        System.out.println(login.getUsername());
-        System.out.println(login.getPassword());
+    public ResponseEntity<?> login(@Valid @RequestBody LoginDTO login) {
         try {
-        authenticationManager.authenticate(new 
-        UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
         } catch (Exception e) {
-            System.out.println("Still eror");
             e.printStackTrace();
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         JwtHelper helper = new JwtHelper();
         Optional<Account> account = accountService.findById(login.getUsername());
-        
+
         if (account != null) {
             if (passwordEncoder.matches(login.getPassword(), account.get().getPassword())) {
-                System.out.println("token" + helper.generateToken(account.get()));
                 account.get().setToken(helper.generateToken(account.get()));
-                return account.get();
+                return ResponseEntity.ok(account.get());
             }
         }
-        return null;
+        return ResponseEntity.notFound().build();
     }
 
     private void authenticate(String username, String password) throws Exception {
@@ -101,41 +94,41 @@ public class APIUserController {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
-    @PostMapping("")
-    public Account create(@Valid @RequestBody AccountDTO account) {
-        
-        if(account != null) {
-              Account dto = new Account();
-              BeanUtils.copyProperties(account, dto);
-            Account create = accountService.save(dto);
-            return create;
-        }
-        return  null;
-    }
-//    
-//    @PutMapping("/{id}")
-//    public Role update(@Valid @RequestBody RoleDTO roleDTO) {
-//        if(roleDTO != null) {
-//              Role role = new Role();
-//              BeanUtils.copyProperties(roleDTO, role);
-//            Role create = roleService.save(role);
-//            return create;
-//        }
-//        return  null;
-//    }
-//    
-//    @DeleteMapping("/{id}")
-//    public Optional<Role> remove(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) {
-//        if(id != null) {
-//            Optional<Role> detail = roleService.findById(id);
-//            
-//            if(detail != null) {
-//              roleService.delete(detail.get());
-//                return detail;
-//            }
-//            response.setStatus( HttpServletResponse.SC_BAD_REQUEST  );
-//        }
-//        return  null;
-//    }
 
+    @PostMapping("")
+    public ResponseEntity<?> create(@Valid @RequestBody AccountDTO account) {
+
+        if (account != null) {
+            Account dto = new Account();
+            BeanUtils.copyProperties(account, dto);
+            Account create = accountService.save(dto);
+            return ResponseEntity.ok(create);
+        }
+        return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@Valid @RequestBody AccountDTO roleDTO) {
+        if (roleDTO != null) {
+            Account role = new Account();
+            BeanUtils.copyProperties(roleDTO, role);
+            Account create = accountService.save(role);
+            return ResponseEntity.ok(create);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{username}")
+    public ResponseEntity<?> remove(@PathVariable("id") String username, HttpServletRequest request, HttpServletResponse response) {
+        if (username != null) {
+            Optional<Account> detail = accountService.findById(username);
+
+            if (detail != null) {
+                accountService.delete(detail.get());
+                return ResponseEntity.ok(detail.get());
+            }
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+}
