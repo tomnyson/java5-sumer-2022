@@ -7,6 +7,7 @@ package com.teachJava5.teachJava5.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
@@ -41,10 +42,11 @@ public class Account implements Serializable {
     @ManyToOne
     @JoinColumn(name = "roleId")
     private Role role;
-    
+    @JsonIgnoreProperties(value = {"hibernateLazyInitializer","handler"})
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     Set<Order> orders;
+    private String token;
 }

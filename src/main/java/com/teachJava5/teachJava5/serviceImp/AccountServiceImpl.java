@@ -8,6 +8,7 @@ package com.teachJava5.teachJava5.serviceImp;
 import com.teachJava5.teachJava5.domain.Account;
 import com.teachJava5.teachJava5.repository.AccountRepository;
 import com.teachJava5.teachJava5.service.AccountService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -17,6 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +29,7 @@ import org.springframework.stereotype.Service;
  * @author tomnyson
  */
 @Service
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl implements AccountService, UserDetailsService {
     @Autowired
     AccountRepository accountRepository;
     
@@ -153,6 +157,12 @@ public class AccountServiceImpl implements AccountService {
 
     public Account checkLogin(String username, String password) {
         return accountRepository.checkLogin(username, password);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Account user =  accountRepository.getById(username);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
     }
     
     
